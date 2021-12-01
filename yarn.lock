@@ -7557,7 +7557,7 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-gitea-react-toolkit@1.11.1:
+gitea-react-toolkit@1.11.1, gitea-react-toolkit@^1.11.1:
   version "1.11.1"
   resolved "https://registry.yarnpkg.com/gitea-react-toolkit/-/gitea-react-toolkit-1.11.1.tgz#d5d3c37b4b8b8d90ae43e122eeb8a51ae6aa9d10"
   integrity sha512-nCMwEr8a2Fy+q56tNOYPdSjWqyrBNdmMIueXhv9U/yj2PNJNPFMr3aMxp00ggZMLNkB0FZakUkduAHIUsf8wMg==
@@ -7569,22 +7569,6 @@ gitea-react-toolkit@1.11.1:
     jszip "^3.5.0"
     localforage "1.7.3"
     markdown-translatable "2.0.0"
-    prop-types "15.7.2"
-    use-deep-compare-effect "^1.3.1"
-    utf8 "3.0.0"
-
-gitea-react-toolkit@^1.11.1-beta.1:
-  version "1.11.1-beta.1"
-  resolved "https://registry.yarnpkg.com/gitea-react-toolkit/-/gitea-react-toolkit-1.11.1-beta.1.tgz#0f18329a2098260a761d1831f8f408a3e0788c63"
-  integrity sha512-29rdYad7wmiNHolMINrP3H1eY9fc/U9PPfXGKLvW6Lou9DW2GHmqRSRlBrKCM2jjQ1WDTAD6JBjLPpHGny13nA==
-  dependencies:
-    awesome-debounce-promise "2.1.0"
-    axios "0.19.0"
-    axios-cache-adapter "2.4.1"
-    base-64 "0.1.0"
-    jszip "^3.5.0"
-    localforage "1.7.3"
-    markdown-translatable "1.3.1-rc.1"
     prop-types "15.7.2"
     use-deep-compare-effect "^1.3.1"
     utf8 "3.0.0"
