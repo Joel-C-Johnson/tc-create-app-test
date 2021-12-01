@@ -1,0 +1,85 @@
+name: Install, Build & Run Cypress
+
+on: [push, pull_request]
+env:
+  CHILD_CONCURRENCY: 1
+  NODE_ENV: test
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: ${{ secrets.ACTIONS_ALLOW_UNSECURE_COMMANDS }}
+  COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+  CYPRESS_TEST_USERNAME: ${{ secrets.CYPRESS_TEST_USERNAME }}
+  CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
+  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+  CYPRESS_CACHE_FOLDER: ${{ secrets.CYPRESS_CACHE_FOLDER }}
+jobs:
+  test:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        node-version: [10.15.1]
+    steps:
+      - name: Extract Branch Name
+        run: |
+          echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          echo ${GITHUB_REF#refs/heads/}
+          echo ${GITHUB_REF}
+      - uses: actions/checkout@v2.3.4
+        with:
+          ref: ${{ env.BRANCH }}
+      - uses: actions/setup-node@v2.1.5
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          record: true
+          headless: true
+          browser: chrome
+          group: "Integration tests"
+          start: yarn start
+          wait-on: "http://localhost:3000"
+          wait-on-timeout: 360
+        env:
+          CYPRESS_RECORD_KEY: ${{ env.CYPRESS_RECORD_KEY }}
+      - name: Run Unit Tests
+        run: yarn test:unit;
+      - name: Create Badge For Coverage Results
+        if: github.event_name == 'push'
+        run: yarn create-coverage-badge;
+      - name: Commit Coverage Results
+        if: github.event_name == 'push'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add ./coverage/shields.json -f
+          git checkout .
+          git diff-index --quiet HEAD || git commit -m "Add Coverage Results"
+      - name: Push changes
+        if: github.event_name == 'push'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ACTIONS_TOKEN }}
+          branch: ${{ env.BRANCH }}
+      - name: Archive test screenshots
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: screenshots
+          path: cypress/screenshots
+        if: ${{ failure() }}
+  auto_merge:
+    needs: [test]
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' &&
+      (github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]')
+    steps:
+      - name: "@dependabot merge"
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.ACTIONS_TOKEN}}
+          script: |
+            github.issues.createComment({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              issue_number: context.payload.pull_request.number,
+              body: '@dependabot merge'
+            })
