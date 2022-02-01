@@ -10644,6 +10644,20 @@ markdown-translatable@2.0.1:
     turndown "^7.0.0"
     turndown-plugin-gfm "^1.0.2"
 
+markdown-translatable@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/markdown-translatable/-/markdown-translatable-2.0.2.tgz#198a9990c59e1cb3c25f73698988844e2b6988d6"
+  integrity sha512-xXJfq+nV1wIWOK8514bNVDF6LoYA0jLiDf9eRw+/dzxgjJr4Ibt/Al1Zuh1+Z/WPxxyUeh3IHjc4onwg6BqPyw==
+  dependencies:
+    deep-freeze "^0.0.1"
+    md5 "^2.2.1"
+    prop-types "^15.7.2"
+    react-headroom "^3.1.0"
+    react-markdown "4.0.6"
+    showdown "^1.9.1"
+    turndown "^7.0.0"
+    turndown-plugin-gfm "^1.0.2"
+
 md5.js@^1.3.4:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/md5.js/-/md5.js-1.3.5.tgz#b5d07b8e3216e3e27cd728d72f70d1e6a342005f"
